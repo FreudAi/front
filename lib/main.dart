@@ -5,7 +5,9 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:get/get.dart';
 import 'package:madaride/ui/screen/login_page.dart';
+import 'package:madaride/ui/screen/profile_page.dart';
 import 'package:madaride/ui/screen/search_result_page.dart';
+import 'package:madaride/ui/screen/show_ride_screen.dart';
 import 'package:madaride/ui/screen/sign_up_page.dart';
 import 'package:madaride/utils/auth_state.dart';
 import 'package:provider/provider.dart';
@@ -15,7 +17,7 @@ void main() {
   runApp(
     ChangeNotifierProvider(
       create: (context) => AuthState(),
-      child: MyApp(),
+      child: const MyApp(),
     ),
   );
 }
@@ -67,6 +69,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+      debugShowCheckedModeBanner: false,
       localizationsDelegates: const [
         FormBuilderLocalizations.delegate,
         ...GlobalMaterialLocalizations.delegates,
@@ -81,9 +84,11 @@ class _MyAppState extends State<MyApp> {
       home: const MyHomePage(),
       getPages: [
         GetPage(name: "/", page: () => const MyHomePage()),
-        GetPage(name: '/search-result', page: () => const SearchResultPage(trips: [])),
+        GetPage(name: '/search-result', page: () => SearchResultPage()),
         GetPage(name: '/login', page: () => LoginPage()),
-        GetPage(name: '/sign-up', page: () => SignUpPage()),
+        GetPage(name: '/sign-up', page: () => const SignUpPage()),
+        GetPage(name: '/ride/:slug', page: () => ShowRidePage(slug: Get.parameters['slug']!)),
+        GetPage(name: '/profile', page: () => const ProfilePage()),
       ],
     );
   }

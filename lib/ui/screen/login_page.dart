@@ -4,6 +4,10 @@ import 'package:get/get.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:madaride/service/auth_service.dart';
 import 'package:madaride/ui/screen/home_page.dart';
+import 'package:provider/provider.dart';
+
+import '../../model/user.dart';
+import '../../utils/auth_state.dart';
 
 class LoginPage extends StatelessWidget {
   final _formKey = GlobalKey<FormBuilderState>();
@@ -13,6 +17,9 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    final authState = Provider.of<AuthState>(context);
+
     return Scaffold(
       appBar: AppBar(
           title: const Text("Se connecter à MadaRide"),
@@ -65,6 +72,8 @@ class LoginPage extends StatelessWidget {
                                 formData['password'],
                               );
                               if (isLogin) {
+                                final User user = await authService.profile();
+                                authState.login(user);
                                 Get.to(() => const MyHomePage());
                               } else {
                                 Get.snackbar('Erreur', 'Invalid credentials');

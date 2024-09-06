@@ -1,7 +1,10 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:http_interceptor/http/intercepted_client.dart';
 import 'package:intl/intl.dart';
 import 'package:madaride/model/ride.dart';
+
+import '../utils/http_interceptor.dart';
 
 class ApiService {
   final String baseUrl = 'http://172.20.10.9:8000/api';
@@ -25,6 +28,26 @@ class ApiService {
       return body.map((dynamic item) => Ride.fromJson(item)).toList();
     } else {
       throw Exception('Failed to load trips: ${response.statusCode}');
+    }
+  }
+
+  Future<Ride> getRideBySlug(String slug) async {
+    final client = InterceptedClient.build(
+      interceptors: [AuthInterceptor()],
+    );
+
+    final response = await client.get(
+      Uri.parse('$baseUrl/ride/$slug'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      Map<String, dynamic> body = jsonDecode(response.body);
+      return Ride.fromJson(body);
+    } else {
+      throw Exception('Failed to load ride: ${response.statusCode}');
     }
   }
 }

@@ -4,8 +4,6 @@ import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:intl/intl.dart';
 import 'package:get/get.dart';
 import 'package:madaride/ui/kit/drawer.dart';
-import 'package:madaride/ui/screen/search_result_page.dart';
-import '../../service/api_service.dart';
 import 'publish_ride_page.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -21,7 +19,6 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   final _formKey = GlobalKey<FormBuilderState>();
-  final ApiService _apiService = ApiService();
   double _nombrePlaces = 1;
 
   @override
@@ -57,7 +54,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
       ),
-      endDrawer: const RightDrawer(),
+      endDrawer: RightDrawer(),
       floatingActionButton: FloatingActionButton(
         onPressed: _publishRide,
         tooltip: 'Publish ride',
@@ -204,20 +201,16 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  Future<void> _onSearchPressed() async {
+  void _onSearchPressed() {
     if (_formKey.currentState!.saveAndValidate()) {
       final formData = _formKey.currentState!.value;
-      try {
-        final trips = await _apiService.searchTrips(
-          formData['depart'],
-          formData['arrivee'],
-          formData['date'],
-          _nombrePlaces.round(),
-        );
-        Get.to(() => SearchResultPage(trips: trips));
-      } catch (e) {
-        Get.snackbar('Erreur', 'Impossible de récupérer les trajets: $e');
-      }
+      var parameters = <String, String>{
+        "depart": formData['depart'],
+        "arrive": formData['arrivee'],
+        "date": formData["date"].toString(),
+        "places": _nombrePlaces.round().toString()
+      };
+      Get.toNamed("/search-result", parameters: parameters);
     }
   }
 }
