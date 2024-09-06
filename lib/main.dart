@@ -12,8 +12,11 @@ import 'package:madaride/ui/screen/sign_up_page.dart';
 import 'package:madaride/utils/auth_state.dart';
 import 'package:provider/provider.dart';
 import 'ui/screen/home_page.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 void main() {
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   runApp(
     ChangeNotifierProvider(
       create: (context) => AuthState(),
