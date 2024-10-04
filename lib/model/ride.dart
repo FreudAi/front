@@ -48,7 +48,9 @@ class Ride {
   final Location arrivalLocation;
   final DateTime departureDateTime;
   final int availableSeats;
+  final String description;
   final Driver driver;
+  final Car car;
   final double price;
   final String slug;
   final bool bookingAuto;
@@ -59,7 +61,9 @@ class Ride {
     required this.arrivalLocation,
     required this.departureDateTime,
     required this.availableSeats,
+    required this.description,
     required this.driver,
+    required this.car,
     required this.price,
     required this.slug,
     required this.bookingAuto,
@@ -72,10 +76,53 @@ class Ride {
       arrivalLocation: Location.fromJson(jsonDecode(json['arrival_location'])),
       departureDateTime: DateTime.parse(json['departure_datetime']),
       availableSeats: json['available_seats'],
+      description: json['description'],
       driver: Driver.fromJson(json['driver']),
+      car: Car.fromJson(json['car']),
       price: double.parse(json['price']),
       slug: json['slug'],
       bookingAuto: json['booking_auto'],
+    );
+  }
+}
+
+class Car {
+  final int id;
+  final String make;
+  final String model;
+  final int year;
+  final String license_plate;
+  final String color;
+  final int seats;
+  final int average_consumption;
+  final String engine_type;
+  final String slug;
+
+  Car({
+    required this.id,
+    required this.make,
+    required this.model,
+    required this.year,
+    required this.license_plate,
+    required this.color,
+    required this.seats,
+    required this.average_consumption,
+    required this.engine_type,
+    required this.slug,
+  });
+
+  factory Car.fromJson(Map<String, dynamic> json) {
+    return Car(
+      id: json['id'],
+      make: json['make'],
+      model: json['model'],
+      year: json['year'],
+      license_plate: json['license_plate'],
+      color: json['color'],
+      seats: json['seats'],
+      average_consumption: json['average_consumption'],
+      engine_type: json['engine_type'],
+      slug: json['slug'],
     );
   }
 }

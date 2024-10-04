@@ -75,7 +75,7 @@ class _MyHomePageState extends State<MyHomePage> {
           }
         },
         tooltip: 'Publish ride',
-        backgroundColor: const Color(0xFF1D4ED8),
+        backgroundColor: const Color(0xFF5683FF),
         foregroundColor: const Color(0xFFFFFFFF),
         child: const Icon(Icons.add),
       ),
@@ -136,9 +136,11 @@ class _MyHomePageState extends State<MyHomePage> {
         children: [
           FormBuilderTextField(
             name: 'depart',
+            keyboardType: TextInputType.text, // Utilisation du clavier texte
+            textInputAction: TextInputAction.done,
             decoration: const InputDecoration(
               labelText: 'Lieu de départ',
-              prefixIcon: Icon(Icons.location_on),
+              prefixIcon: Icon(Icons.location_on, color: Colors.indigo,),
               //border: OutlineInputBorder(),
             ),
             validator: FormBuilderValidators.compose([
@@ -148,9 +150,11 @@ class _MyHomePageState extends State<MyHomePage> {
           const SizedBox(height: 12),
           FormBuilderTextField(
             name: 'arrivee',
+            keyboardType: TextInputType.text, // Utilisation du clavier texte
+            textInputAction: TextInputAction.done,
             decoration: const InputDecoration(
               labelText: "Lieu d'arrivée",
-              prefixIcon: Icon(Icons.location_on),
+              prefixIcon: Icon(Icons.flag, color: Colors.green),
               //border: OutlineInputBorder(),
             ),
             validator: FormBuilderValidators.compose([
@@ -164,7 +168,7 @@ class _MyHomePageState extends State<MyHomePage> {
             format: DateFormat('yyyy/MM/dd'),
             decoration: const InputDecoration(
               labelText: 'Date du voyage',
-              prefixIcon: Icon(Icons.calendar_today),
+              prefixIcon: Icon(Icons.calendar_today, color: Colors.amber),
               //border: OutlineInputBorder(),
             ),
             validator: FormBuilderValidators.compose([
@@ -203,8 +207,8 @@ class _MyHomePageState extends State<MyHomePage> {
             Slider(
               value: _nombrePlaces,
               min: 1,
-              max: 5,
-              divisions: 4,
+              max: 4,
+              divisions: 3,
               label: _nombrePlaces.round().toString(),
               onChanged: (double value) {
                 setState(() {

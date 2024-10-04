@@ -15,3 +15,8 @@ String formatDate(String dateString) {
   // Retourner la date formatée
   return formatter.format(dateTime);
 }
+
+String getFirstElement(String text) {
+  // Split le texte par la virgule et retourne le premier élément
+  return text.split(',')[0].trim();
+}

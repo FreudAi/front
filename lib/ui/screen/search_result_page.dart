@@ -89,7 +89,7 @@ class _SearchResultPageState extends State<SearchResultPage> {
                           // Logique du bouton Filter (à implémenter)
                         },
                         child: const Text(
-                          "Filter",
+                          "Filtre",
                           style: TextStyle(
                             fontSize: 16,
                             color: Color(0xFF1D4ED8), // même couleur que l'appBar
@@ -177,7 +177,7 @@ class _RideCard extends StatelessWidget {
                   ),
                 ],
               ),
-              const Divider(),
+              const Divider(thickness: 0.5),
               _buildLocationInfo(
                 icon: Icons.place,
                 location: ride.departureLocation.label,

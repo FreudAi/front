@@ -1,11 +1,8 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:get/get.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:madaride/service/auth_service.dart';
-import 'package:madaride/ui/screen/home_page.dart';
 import 'package:provider/provider.dart';
 
 import '../../model/user.dart';
@@ -47,15 +44,25 @@ class LoginPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-          title: const Text("Se connecter à MadaRide"),
+          title: const Text("Se connecter"),
           backgroundColor: const Color(0xFF1D4ED8),
           foregroundColor: const Color(0xFFFFFFFF)),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0), // Padding autour de toute la page
+        padding: const EdgeInsets.all(16.0),
         child: Center(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              // Ajout de l'image en haut
+              Padding(
+                padding: const EdgeInsets.only(bottom: 26.0),
+                child: Image.asset(
+                  'assets/image/logo.png',  // Chemin de l'image
+                  width: 150,               // Largeur de l'image
+                  height: 50,              // Hauteur de l'image
+                  fit: BoxFit.contain,       // S'assurer que l'image est bien contenue
+                ),
+              ),
               FormBuilder(
                 key: _formKey,
                 child: Column(
@@ -88,8 +95,7 @@ class LoginPage extends StatelessWidget {
                       width: double.infinity,
                       child: ElevatedButton(
                         onPressed: () async {
-                          if (_formKey.currentState?.saveAndValidate() ??
-                              false) {
+                          if (_formKey.currentState?.saveAndValidate() ?? false) {
                             final formData = _formKey.currentState!.value;
                             try {
                               final isLogin = await authService.login(
@@ -109,9 +115,10 @@ class LoginPage extends StatelessWidget {
                           }
                         },
                         style: ElevatedButton.styleFrom(
-                            minimumSize: const Size(double.infinity, 50),
-                            backgroundColor: const Color(0xFF1D4ED8),
-                            foregroundColor: const Color(0xFFFFFFFF)),
+                          minimumSize: const Size(double.infinity, 50),
+                          backgroundColor: const Color(0xFF1D4ED8),
+                          foregroundColor: const Color(0xFFFFFFFF),
+                        ),
                         child: const Text('Se connecter'),
                       ),
                     ),
@@ -125,8 +132,7 @@ class LoginPage extends StatelessWidget {
                   const Text('Nouveau?'),
                   TextButton(
                     onPressed: () {
-                      Get.toNamed(
-                          '/sign-up'); // Navigation vers la page d'inscription
+                      Get.toNamed('/sign-up');
                     },
                     child: const Text("S'inscrire"),
                   ),

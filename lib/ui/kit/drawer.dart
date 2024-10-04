@@ -32,8 +32,36 @@ class RightDrawer extends StatelessWidget {
           ),
           if (authState.isAuthenticated) ...[
             ListTile(
+              leading: const Icon(Icons.list_alt),
+              title: const Text('Réservations'),
+              onTap: () {
+                Get.to(() => const ProfilePage());
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.add_road),
+              title: const Text('Mes trajets'),
+              onTap: () {
+                Get.to(() => const ProfilePage());
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.directions_car),
+              title: const Text('Véhicules'),
+              onTap: () {
+                Get.to(() => const ProfilePage());
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.favorite),
+              title: const Text('Préférences'),
+              onTap: () {
+                Get.to(() => const ProfilePage());
+              },
+            ),
+            ListTile(
               leading: const Icon(Icons.person),
-              title: const Text('Profil'),
+              title: const Text('Mon compte'),
               onTap: () {
                 Get.to(() => const ProfilePage());
               },

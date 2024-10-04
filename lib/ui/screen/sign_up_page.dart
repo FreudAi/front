@@ -61,17 +61,26 @@ class _SignUpPageState extends State<SignUpPage> {
         child: FormBuilder(
           key: _formKey,
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              Padding(
+                padding: const EdgeInsets.only(bottom: 20.0),
+                child: Image.asset(
+                  'assets/image/logo.png',  // Chemin de l'image
+                  width: 150,               // Largeur de l'image
+                  height: 50,              // Hauteur de l'image
+                  fit: BoxFit.contain,       // S'assurer que l'image est bien contenue
+                ),
+              ),
               FormBuilderTextField(
                 name: 'name',
-                decoration: const InputDecoration(labelText: 'Name'),
+                decoration: const InputDecoration(labelText: 'Nom complet'),
                 validator: FormBuilderValidators.required(),
               ),
               const SizedBox(height: 16),
               FormBuilderTextField(
                 name: 'email',
-                decoration: const InputDecoration(labelText: 'Email'),
+                decoration: const InputDecoration(labelText: 'Adresse email'),
                 validator: FormBuilderValidators.compose([
                   FormBuilderValidators.required(),
                   FormBuilderValidators.email(),
@@ -80,25 +89,30 @@ class _SignUpPageState extends State<SignUpPage> {
               const SizedBox(height: 16),
               FormBuilderTextField(
                 name: 'address',
-                decoration: const InputDecoration(labelText: 'Address'),
+                decoration: const InputDecoration(labelText: 'Adresse'),
                 validator: FormBuilderValidators.required(),
               ),
               const SizedBox(height: 16),
               FormBuilderTextField(
                 name: 'phone_number',
-                decoration: const InputDecoration(labelText: 'Phone Number'),
+                decoration: const InputDecoration(labelText: 'Numero de téléphone'),
                 validator: FormBuilderValidators.required(),
               ),
               const SizedBox(height: 16),
               FormBuilderTextField(
                 name: 'password',
-                decoration: const InputDecoration(labelText: 'Password'),
+                decoration: const InputDecoration(labelText: 'Mot de passe'),
                 obscureText: true,
                 validator: FormBuilderValidators.required(),
               ),
               const SizedBox(height: 16),
               // CIN File Picker
-              const Text('CIN File'),
+              const Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text('Scan du CIN', style: TextStyle(fontSize: 16),),
+                  ]
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -111,7 +125,12 @@ class _SignUpPageState extends State<SignUpPage> {
               ),
               const SizedBox(height: 16),
               // Bust File Picker
-              const Text('Bust File'),
+              const Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text('Photo buste de vous', style: TextStyle(fontSize: 16),),
+                  ]
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -130,9 +149,9 @@ class _SignUpPageState extends State<SignUpPage> {
                     if (_formKey.currentState?.saveAndValidate() ?? false) {
                       // Traitement de l'inscription
                       final formData = _formKey.currentState?.value;
-                      print(formData);
+                      /*print(formData);
                       print('CIN File: $cinFilePath');
-                      print('Bust File: $bustFilePath');
+                      print('Bust File: $bustFilePath');*/
                     } else {
                       print("Validation failed");
                     }
