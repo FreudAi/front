@@ -5,7 +5,8 @@ import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:intl/intl.dart';
 import 'package:get/get.dart';
 import 'package:madaride/ui/kit/drawer.dart';
-import 'publish_ride_page.dart';
+import 'package:provider/provider.dart';
+import '../../utils/auth_state.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
@@ -15,10 +16,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  void _publishRide() {
-    Get.to(const PublishRidePage());
-  }
-
   @override
   void initState() {
     super.initState();
@@ -30,6 +27,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final authState = Provider.of<AuthState>(context);
+
     return Scaffold(
       extendBodyBehindAppBar: true,
       // Permet au contenu de passer derrière l'AppBar
@@ -63,7 +62,18 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       endDrawer: RightDrawer(),
       floatingActionButton: FloatingActionButton(
-        onPressed: _publishRide,
+        onPressed: () async {
+          if (authState.isAuthenticated) {
+            await Future.delayed(const Duration(seconds: 1), () {
+              Get.toNamed("/publish-ride");
+            });
+          } else {
+            await Future.delayed(const Duration(seconds: 1), () {
+              authState.redirectAfterLogin = "/publish-ride";
+              Get.toNamed("/login");
+            });
+          }
+        },
         tooltip: 'Publish ride',
         backgroundColor: const Color(0xFF1D4ED8),
         foregroundColor: const Color(0xFFFFFFFF),

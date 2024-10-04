@@ -3,6 +3,9 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:get/get.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:provider/provider.dart';
+
+import '../../utils/auth_state.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -33,8 +36,21 @@ class _SignUpPageState extends State<SignUpPage> {
     }
   }
 
+  Future<void> _redirect (AuthState authState) async {
+    if(authState.isAuthenticated) {
+      await Future.delayed(const Duration(seconds: 1), () {
+        Get.offNamed("/");
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+
+    final authState = Provider.of<AuthState>(context);
+
+    _redirect(authState);
+
     return Scaffold(
       appBar: AppBar(
           title: const Text("S'inscrire à MadaRide"),

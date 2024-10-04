@@ -25,6 +25,7 @@ class _ShowRidePageState extends State<ShowRidePage> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Détails du trajet'),

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:get/get.dart';
@@ -15,10 +17,33 @@ class LoginPage extends StatelessWidget {
 
   LoginPage({super.key});
 
+  Future<void> _redirect(AuthState authState) async {
+    if (authState.isAuthenticated) {
+      await Future.delayed(const Duration(seconds: 1), () {
+        Get.offNamed("/");
+      });
+    }
+  }
+
+  Future<void> _redirectAfterLogin(AuthState authState) async {
+    if (authState.redirectAfterLogin != "") {
+      String path = authState.redirectAfterLogin;
+      authState.redirectAfterLogin = "";
+      await Future.delayed(const Duration(seconds: 1), () {
+        Get.offAllNamed(path);
+      });
+    } else {
+      await Future.delayed(const Duration(seconds: 1), () {
+        Get.toNamed("/");
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    final AuthState authState = Provider.of<AuthState>(context);
 
-    final authState = Provider.of<AuthState>(context);
+    _redirect(authState);
 
     return Scaffold(
       appBar: AppBar(
@@ -74,7 +99,7 @@ class LoginPage extends StatelessWidget {
                               if (isLogin) {
                                 final User user = await authService.profile();
                                 authState.login(user);
-                                Get.to(() => const MyHomePage());
+                                _redirectAfterLogin(authState);
                               } else {
                                 Get.snackbar('Erreur', 'Invalid credentials');
                               }

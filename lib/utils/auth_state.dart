@@ -6,13 +6,17 @@ import '../model/user.dart';
 class AuthState extends ChangeNotifier {
   bool _isAuthenticated = false;
   late User _user;
+  String _redirectAfterLogin = "";
 
   User get user => _user;
 
   set user(user) => _user = user;
 
   bool get isAuthenticated => _isAuthenticated;
-  set isAuthenticated(isAuth) => _isAuthenticated = isAuth;
+  set isAuthenticated(bool isAuth) => _isAuthenticated = isAuth;
+
+  String get redirectAfterLogin => _redirectAfterLogin;
+  set redirectAfterLogin(String path) => _redirectAfterLogin = path;
 
   void login(User user) {
     _user = user;

@@ -6,6 +6,7 @@ import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:get/get.dart';
 import 'package:madaride/ui/screen/login_page.dart';
 import 'package:madaride/ui/screen/profile_page.dart';
+import 'package:madaride/ui/screen/publish_ride_page.dart';
 import 'package:madaride/ui/screen/search_result_page.dart';
 import 'package:madaride/ui/screen/show_ride_screen.dart';
 import 'package:madaride/ui/screen/sign_up_page.dart';
@@ -92,6 +93,7 @@ class _MyAppState extends State<MyApp> {
         GetPage(name: '/sign-up', page: () => const SignUpPage()),
         GetPage(name: '/ride/:slug', page: () => ShowRidePage(slug: Get.parameters['slug']!)),
         GetPage(name: '/profile', page: () => const ProfilePage()),
+        GetPage(name: '/publish-ride', page: () => const PublishRidePage()),
       ],
     );
   }

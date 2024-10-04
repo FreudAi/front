@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:madaride/model/ride.dart';
-import 'package:madaride/ui/screen/show_ride_screen.dart';
+import 'package:madaride/utils/function.dart';
+import 'package:provider/provider.dart';
 import '../../service/api_service.dart';
+import '../../utils/auth_state.dart';
 
 class SearchResultPage extends StatefulWidget {
   final String? depart;
@@ -71,12 +73,51 @@ class _SearchResultPageState extends State<SearchResultPage> {
           } else if (snapshot.hasError) {
             return Center(child: Text('Erreur: ${snapshot.error}'));
           } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
-            return ListView.builder(
-              itemCount: snapshot.data!.length,
-              itemBuilder: (context, index) {
-                final ride = snapshot.data![index];
-                return _RideCard(ride: ride);
-              },
+            final int resultCount = snapshot.data!.length;
+
+            return Column(
+              children: [
+                // Row with Filter button and result count
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      // Filter button
+                      TextButton(
+                        onPressed: () {
+                          // Logique du bouton Filter (à implémenter)
+                        },
+                        child: const Text(
+                          "Filter",
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: Color(0xFF1D4ED8), // même couleur que l'appBar
+                          ),
+                        ),
+                      ),
+                      // Number of results
+                      Text(
+                        '$resultCount trajets trouvés',
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                // List of results
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: resultCount,
+                    itemBuilder: (context, index) {
+                      final ride = snapshot.data![index];
+                      return _RideCard(ride: ride);
+                    },
+                  ),
+                ),
+              ],
             );
           } else {
             return const Center(child: Text('Aucun trajet trouvé!'));
@@ -85,6 +126,7 @@ class _SearchResultPageState extends State<SearchResultPage> {
       ),
     );
   }
+
 }
 
 class _RideCard extends StatelessWidget {
@@ -94,18 +136,30 @@ class _RideCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    final authState = Provider.of<AuthState>(context);
+
     return Card(
-      margin: const EdgeInsets.all(5),
+      margin: const EdgeInsets.all(4),
       shape: RoundedRectangleBorder(
         side: const BorderSide(color: Colors.grey, width: 0.2),
         borderRadius: BorderRadius.circular(8),
       ),
       child: ListTile(
-        onTap: () {
-          Get.to(() => ShowRidePage(slug: ride.slug));
+        onTap: () async {
+          if (authState.isAuthenticated) {
+            await Future.delayed(const Duration(seconds: 1), () {
+              Get.toNamed("/ride/${ride.slug}");
+            });
+          } else {
+            await Future.delayed(const Duration(seconds: 1), () {
+              authState.redirectAfterLogin = "/ride/${ride.slug}";
+              Get.toNamed("/login");
+            });
+          }
         },
         subtitle: Padding(
-          padding: const EdgeInsets.all(5.0),
+          padding: const EdgeInsets.all(2.0),
           child: Column(
             children: [
               Row(
@@ -117,8 +171,9 @@ class _RideCard extends StatelessWidget {
                   ),
                   _buildRideInfoRow(
                     icon: Icons.monetization_on,
-                    label: "${ride.price} MGA",
+                    label: "${formatPrice(ride.price)} MGA",
                     fontWeight: FontWeight.w600,
+                    iconColor: Colors.lightGreen
                   ),
                 ],
               ),
@@ -126,16 +181,19 @@ class _RideCard extends StatelessWidget {
               _buildLocationInfo(
                 icon: Icons.place,
                 location: ride.departureLocation.label,
+                iconColor: Colors.blue.shade900
               ),
-              const SizedBox(height: 10),
+              const SizedBox(height: 5),
               _buildLocationInfo(
                 icon: Icons.flag,
                 location: ride.arrivalLocation.label,
+                iconColor: Colors.green.shade700
               ),
-              const SizedBox(height: 10),
+              const SizedBox(height: 5),
               _buildRideInfoRow(
                 icon: Icons.date_range,
-                label: ride.departureDateTime.toString(),
+                iconColor: Colors.yellow.shade700,
+                label: formatDate(ride.departureDateTime.toString()),
               ),
               const Divider(),
               _buildDriverInfo(ride.driver.name),
@@ -150,13 +208,14 @@ class _RideCard extends StatelessWidget {
     required IconData icon,
     required String label,
     FontWeight fontWeight = FontWeight.normal,
+    Color iconColor = Colors.black54
   }) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Row(
           children: [
-            Icon(icon, size: 20),
+            Icon(icon, size: 20, color: iconColor,),
             const SizedBox(width: 5),
             Text(label, style: TextStyle(fontSize: 14, fontWeight: fontWeight)),
           ],
@@ -168,11 +227,12 @@ class _RideCard extends StatelessWidget {
   Widget _buildLocationInfo({
     required IconData icon,
     required String location,
+    Color iconColor = Colors.black54
   }) {
     final locationParts = location.split(",");
     return Row(
       children: [
-        Icon(icon, size: 20),
+        Icon(icon, size: 20, color: iconColor),
         const SizedBox(width: 5),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -202,7 +262,7 @@ class _RideCard extends StatelessWidget {
           children: [
             Text("4,5", style: TextStyle(fontSize: 14)),
             SizedBox(width: 5),
-            Icon(Icons.star, size: 20),
+            Icon(Icons.star, size: 20, color: Colors.amberAccent),
           ],
         ),
       ],

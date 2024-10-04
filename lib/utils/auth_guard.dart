@@ -7,7 +7,7 @@ class AuthGuard extends StatelessWidget {
   final Widget authenticatedRoute;
   final Widget unauthenticatedRoute;
 
-  const AuthGuard({
+  const AuthGuard({super.key,
     required this.authenticatedRoute,
     required this.unauthenticatedRoute,
   });

@@ -8,8 +8,15 @@ class PublishRidePage extends StatefulWidget {
 }
 
 class _PublishRidePageState extends State<PublishRidePage> {
+  
+  @override
+  void initState() {
+    super.initState();
+  }
+  
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
         appBar: AppBar(
             title: const Text("Publish Ride"),
