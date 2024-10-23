@@ -10,6 +10,7 @@ import 'package:madaride/ui/screen/publish_ride_page.dart';
 import 'package:madaride/ui/screen/search_result_page.dart';
 import 'package:madaride/ui/screen/show_ride_screen.dart';
 import 'package:madaride/ui/screen/sign_up_page.dart';
+import 'package:madaride/ui/screen/booking_page.dart';
 import 'package:madaride/utils/auth_state.dart';
 import 'package:provider/provider.dart';
 import 'ui/screen/home_page.dart';
@@ -94,6 +95,7 @@ class _MyAppState extends State<MyApp> {
         GetPage(name: '/ride/:slug', page: () => ShowRidePage(slug: Get.parameters['slug']!)),
         GetPage(name: '/profile', page: () => const ProfilePage()),
         GetPage(name: '/publish-ride', page: () => const PublishRidePage()),
+        GetPage(name: '/booking', page: () => const BookingPage())
       ],
     );
   }

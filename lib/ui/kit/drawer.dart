@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:madaride/service/auth_service.dart';
+import 'package:madaride/ui/screen/booking_page.dart';
 import 'package:madaride/ui/screen/home_page.dart';
 import 'package:madaride/ui/screen/login_page.dart';
 import 'package:madaride/ui/screen/profile_page.dart';
@@ -30,12 +31,19 @@ class RightDrawer extends StatelessWidget {
               Get.off(const MyHomePage());
             },
           ),
+          ListTile(
+            leading: const Icon(Icons.list_alt),
+            title: const Text('Réservations'),
+            onTap: () {
+              Get.to(() => const BookingPage());
+            },
+          ),
           if (authState.isAuthenticated) ...[
             ListTile(
               leading: const Icon(Icons.list_alt),
               title: const Text('Réservations'),
               onTap: () {
-                Get.to(() => const ProfilePage());
+                Get.to(() => const BookingPage());
               },
             ),
             ListTile(
@@ -126,13 +134,11 @@ class RightDrawer extends StatelessWidget {
           ),
         ],
       )
-          : const Text(
-        'MadaRide',
-        style: TextStyle(
-          color: Colors.white,
-          fontSize: 24,
-        ),
-      ),
+          : Image.asset(
+            'assets/image/logo.png',
+            width: 100,
+            height: 50,
+          )
     );
   }
 }
